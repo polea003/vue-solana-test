@@ -1,11 +1,11 @@
-[programs.localnet]
-anchor_valentine = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+anchor_valentine = "9gjDBKcUwNKSCDBZfmi7CyJbatUDRjM7jPDP8NgBCPQw"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/PAT/.config/solana/id.json"
 
 [scripts]

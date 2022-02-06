@@ -22,7 +22,7 @@
         <button type="submit" class="bg-pink-400 rounded text-white font-bold font-lg px-2 py-1">Submit</button>
       </form>
       <div v-for='gif in gifs' :key='gif'>
-            <img :src='gif' :alt='gif' />
+            <img :src='gif.gifLink' :alt='gif' />
       </div>
       <div class='flex-1'></div>
       <img class='w-12 h-12' alt="Twitter Logo" src="./assets/twitter-logo.svg"/>
@@ -125,11 +125,26 @@ export default {
         this.getGifList()
       }
     },
-    addGif () {
+    async addGif () {
       if (this.gifInput.length > 0) {
         console.log('Gif link:', this.gifInput)
-        this.gifs = [...this.gifs, this.gifInput]
-        this.gifInput = ''
+        try {
+          const provider = this.getProvider();
+          const program = new Program(idl, programID, provider);
+
+          await program.rpc.addGif(this.gifInput, {
+            accounts: {
+              baseAccount: baseAccount.publicKey,
+              user: provider.wallet.publicKey,
+            },
+          });
+          console.log("GIF successfully sent to program", this.gifInput)
+
+          await this.getGifList();
+        } catch (error) {
+          console.log("Error sending GIF:", error)
+        }   
+        this.gifInput = ''     
       }
       else 
         console.log('empty input')

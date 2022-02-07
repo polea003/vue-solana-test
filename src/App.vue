@@ -39,12 +39,18 @@
 import idl from './idl.json';
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
+import kp from './keypair.json'
 
 // SystemProgram is a reference to the Solana runtime!
 const { SystemProgram, Keypair } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
-let baseAccount = Keypair.generate();
+// let baseAccount = Keypair.generate();
+// Comment out above code in favor of persistant generated key
+const arr = Object.values(kp._keypair.secretKey)
+const secret = new Uint8Array(arr)
+const baseAccount = Keypair.fromSecretKey(secret)
+
 
 // Get our program's id from the IDL file.
 const programID = new PublicKey(idl.metadata.address);
@@ -108,6 +114,7 @@ export default {
             )
 
             this.walletAddress = response.publicKey.toString()
+            this.getGifList()
           }
         } else {
           alert('Solana object not found! Get a Phantom Wallet 👻')
